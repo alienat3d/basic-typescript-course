@@ -16,4 +16,4 @@ console.log(var2);
 
 * (EN TS Docs "«null» & «undefined» types"): https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#null-and-undefined
 * (EN TS Docs "Таблицы совместимостей"): https://www.typescriptlang.org/docs/handbook/type-compatibility.html#subtype-vs-assignment
-* (Статья про "типы «null» & «undefined»" в гайде): https://scriptdev.ru/guide/014/#null-null
+* (RU Статья про "типы «null» & «undefined»" в гайде): https://scriptdev.ru/guide/014/#null-null

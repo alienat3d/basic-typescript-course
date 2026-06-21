@@ -12,4 +12,4 @@
 **links**
 
 * (EN TS Docs "any"): https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any
-* (Статья про "any" в гайде): https://scriptdev.ru/guide/012/#_4
+* (RU Статья про "any" в гайде): https://scriptdev.ru/guide/012/#_4

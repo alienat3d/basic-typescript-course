@@ -11,4 +11,4 @@
 * (EN TS Docs "«symbol» type"): https://www.typescriptlang.org/docs/handbook/symbols.html
 * (EN TS Docs "Конфигурация стандарта"): https://www.typescriptlang.org/tsconfig#target
 * (EN TS Docs "Таблицы совместимостей"): https://www.typescriptlang.org/docs/handbook/type-compatibility.html#subtype-vs-assignment
-* (Статья про тип "symbol" в гайде): https://scriptdev.ru/guide/013/#symbol
+* (RU Статья про тип "symbol" в гайде): https://scriptdev.ru/guide/013/#symbol

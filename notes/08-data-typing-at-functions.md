@@ -8,4 +8,4 @@
 **links**
 
 * (EN TS Docs "Functions"): https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#functions
-* (Статья "Функции в гайде"): https://scriptdev.ru/guide/011/#_4
+* (RU Статья "Функции в гайде"): https://scriptdev.ru/guide/011/#_4

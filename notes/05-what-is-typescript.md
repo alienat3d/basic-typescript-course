@@ -46,7 +46,7 @@ class Student {
 |===:===:===:===>
 **links**
 
-* (TypeScript Docs [en]): https://www.typescriptlang.org/docs/
-* (TypeScript Docs [ru]): https://scriptdev.ru/guide/000/
-* (Статья «Статическая и динамическая типизация»): https://scriptdev.ru/guide/006/
-* (Документация плагина «Prettier»): https://prettier.io/docs/en/
+* (EN TypeScript Docs): https://www.typescriptlang.org/docs/
+* (RU TypeScript Docs): https://scriptdev.ru/guide/000/
+* (RU Статья «Статическая и динамическая типизация»): https://scriptdev.ru/guide/006/
+* (EN Документация плагина «Prettier»): https://prettier.io/docs/en/

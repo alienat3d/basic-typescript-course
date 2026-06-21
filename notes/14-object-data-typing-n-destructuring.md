@@ -8,4 +8,4 @@
 **links**
 
 * (EN TS Docs "Object destructuring"): https://www.typescriptlang.org/docs/handbook/variable-declarations.html#object-destructuring
-* (Статья про объекты в гайде): https://scriptdev.ru/guide/013/#symbolhttps://scriptdev.ru/guide/019/#object-object
+* (RU Статья про объекты в гайде): https://scriptdev.ru/guide/013/#symbolhttps://scriptdev.ru/guide/019/#object-object

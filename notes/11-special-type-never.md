@@ -10,4 +10,4 @@
 **links**
 
 * (EN TS Docs "«never» type"): https://www.typescriptlang.org/docs/handbook/2/functions.html#never
-* (Статья про "тип «never»" в гайде): https://scriptdev.ru/guide/014/
+* (RU Статья про "тип «never»" в гайде): https://scriptdev.ru/guide/014/
