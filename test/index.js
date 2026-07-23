@@ -1,52 +1,32 @@
 "use strict";
-// ? 43.0 Здесь мы потренируемся работе с элементами DOM-дерева на языке TypeScript. Здесь у нас представлен функционал сбора данных из форм. Наша задача написать и типизировать таким образом, чтобы код был как можно более стабильным и безошибочным в работе.
-// ? 43.1 В данном примере собираются данные из двух разных форм, чтобы сформировать единый объект "formData", чтобы затем отправить его на сервер.
-const forms = document.querySelectorAll("form");
-const emailInput = document.querySelector("#email");
-const titleInput = document.querySelector("#title");
-const textarea = document.querySelector("#text");
-const checkbox = document.querySelector("#checkbox");
-const formData = {
-    email: "",
-    title: "",
-    text: "",
-    checkbox: false,
-};
-// Последовательность действий:
-// 1) Происходит submit любой из форм
-// 2) Все данные из 4-х полей со страницы переходят в свойства объекта formData
-// 3) Запускается функция validateFormData с этим объектом, возвращает true/false
-// 4) Если на предыдущем этапе true, то запускается функция checkFormData с этим объектом
-function validateFormData(data) {
-    // Если каждое из свойств объекта data правдиво...
-    if (data.email && data.title && data.text && data.checkbox) {
-        return true;
+// 64.1.0 Начнём, пожалуй, с работы с JSON-файлами в TypeScript.
+const jsonData = "{ 'name': 'Musterman', 'age': 50 }";
+// 64.3.1 Сюда мы собственно будем получать те данные, что получим от серверного API.
+let toDoList = [];
+// 64.4.0 Итак, создаём запрос к серверному API JSONplaceholder. С помощью метода fetch мы отправим запрос по URL к JSON-данным на сервере. Затем по чейнингу мы получим ответ данных в "response" и попробуем применить к нему метод "json" для конвертации JSON-данных в обычный объект JavaScript. Следующим действием мы помещаем данные внутрь массива "toDoList".
+fetch("https://jsonplaceholder.typicode.com/todos/1")
+    .then(response => response.json())
+    .then(jsonData => {
+    // 64.4.1 На этом этапе вспомним начало урока и прибегнем к сужению типов, чтобы убедиться, что мы получили в "jsonData" действительно объект с нужным свойством. И так в условии мы проверяем, что свойство "id" существует внутри "jsonData". Т.е. если свойство "id" найдено в объекте "jsonData" (если это вообще объект), то условие вернёт true и объект благополучно запишется в массив "toDoList" при помощи метода "push".
+    if ("id" in jsonData) {
+        toDoList.push(jsonData);
+    }
+    console.log("Single ToDo: ", toDoList);
+});
+// 64.5.0 Рассмотрим запрос на получение многих объектов ToDo. И здесь, в отличии от предыдущего примера, нам необходимо добавить ещё одну проверку, иначе мы просто получим в консоль пустой объект, т.к. проверка только по свойству не сработает при получении массива с объектами. Такое часто бывает в практике, т.к. иногда мы просто не можем быть уверенны в том, какие именно данные вернуться от сервера — это может быть объект, массив с объектами или даже какая-то строка.
+// 64.5.1 Поэтому здесь мы добавим ещё одно условие, где проверим, что пришедшие данные это массив при помощи метода "isArray".
+fetch("https://jsonplaceholder.typicode.com/todos")
+    .then(response => response.json())
+    .then(jsonData => {
+    if ("id" in jsonData) {
+        toDoList.push(jsonData);
+    }
+    else if (Array.isArray(jsonData)) {
+        // 64.5.2 И, раз уж это массив, то мы просто присвоим его значением в "toDoList".
+        toDoList = jsonData;
     }
     else {
-        console.log("Please, complete all fields");
-        return false;
+        console.log(`${jsonData} is a string`);
     }
-}
-function checkFormData(data) {
-    const { email } = data;
-    const emails = ["example@gmail.com", "example@ex.com", "admin@gmail.com"];
-    // Если email совпадает хотя бы с одним из массива
-    if (emails.includes(email)) {
-        console.log("This email is already exist");
-    }
-    else {
-        console.log(`Posting data: ${JSON.stringify(formData)}...`);
-    }
-}
-forms.forEach((form) => {
-    form.addEventListener("submit", (evt) => {
-        evt.preventDefault();
-        // Можно и создавать другой объект для соблюдения иммутабельности, но пока не обязательно
-        formData.email = emailInput?.value ?? "";
-        formData.title = titleInput?.value ?? "";
-        formData.text = textarea?.value ?? "";
-        formData.checkbox = checkbox?.checked ?? false;
-        if (validateFormData(formData))
-            checkFormData(formData);
-    });
+    console.log("All ToDos: ", toDoList);
 });
