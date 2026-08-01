@@ -24,7 +24,8 @@
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
 
-    // "strictPropertyInitialization": false, // Для того, чтобы снять TS-ошибки при использовании более нового синтаксиса полей классов в TypeScript
+    "strictPropertyInitialization": false, // Для того чтобы снять TS-ошибки при использовании более нового синтаксиса полей классов в TypeScript
+    // "experimentalDecorators": true, // Если была бы ошибка с синтаксисом декораторов в TypeScript
 
     // Style Options
     // "noImplicitReturns": true,
