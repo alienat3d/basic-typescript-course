@@ -26,7 +26,7 @@
     "exactOptionalPropertyTypes": true,
 
     "strictPropertyInitialization": false, // Для того чтобы снять TS-ошибки при использовании более нового синтаксиса полей классов в TypeScript
-     "experimentalDecorators": false, // Поменять, если есть ошибка с синтаксисом декораторов в TypeScript
+     "experimentalDecorators": true, // Поменять, если есть ошибка с синтаксисом декораторов в TypeScript
 
     // Style Options
     // "noImplicitReturns": true,
