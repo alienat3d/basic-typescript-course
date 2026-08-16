@@ -8,8 +8,8 @@ interface ICar {
 	freeSeats: number;
 }
 
-@changeDoorStatus(true)
-@changeAmountOfFuel(95)
+@ChangeDoorStatus(true)
+@ChangeAmountOfFuel(95)
 class myCar implements ICar {
 	fuel: string = "50%";
 	open: boolean = true;
@@ -21,7 +21,7 @@ class myCar implements ICar {
 }
 
 // 85.2.1 Закомментируем старый синтаксис декораторов, чтобы сравнить с новым. ↓
-// function changeDoorStatus(status: boolean) {
+// function ChangeDoorStatus(status: boolean) {
 // 	console.log("door init");
 // 	return <T extends { new (...args: any[]): {} }>(constructor: T) => {
 // 		console.log("door changed");
@@ -31,7 +31,7 @@ class myCar implements ICar {
 // 	};
 // }
 
-/*function changeAmountOfFuel(amount: number) {
+/*function ChangeAmountOfFuel(amount: number) {
   console.log("fuel init");
 // 85.2.3 Как можно заметить, в изначальной версии у декоратора лишь 1 аргумент "constructor". ↓
   return <T extends { new (...args: any[]): {} }>(constructor: T) => {
@@ -42,8 +42,8 @@ class myCar implements ICar {
   };
 }*/
 
-// 85.2.2.0 Напомним, что "changeDoorStatus" — это фабрика декораторов, а сам декоратор внутри неё возвращается первым/внешним "return".
-function changeDoorStatus(status: boolean) {
+// 85.2.2.0 Напомним, что "ChangeDoorStatus" — это фабрика декораторов, а сам декоратор внутри неё возвращается первым/внешним "return".
+function ChangeDoorStatus(status: boolean) {
 	console.log("door init");
   // 85.2.2.1 декоратор ↑
   // 85.2.4 Но в новой редакции TypeScript будет на это ругаться, поэтому, согласно новому синтаксису заменим "constructor" на два аргумента "target" (то, к чему применяется декоратор: класс, метод, аксессор) & "context" (этот объект должен быть типизирован, как специальный интерфейс "ClassDecoratorContext", который будет давать детали о том, к чему применяется этот декоратор и для каждого декоратора он будет отличаться). ↓
@@ -58,7 +58,7 @@ function changeDoorStatus(status: boolean) {
 	};
 }
 
-function changeAmountOfFuel(amount: number) {
+function ChangeAmountOfFuel(amount: number) {
 	console.log("fuel init");
   // 85.2.5 То же мы сделаем и для второго декоратора, добавив ему такие же аргументы.
 	return <T extends { new (...args: any[]): {} }>(

@@ -4,14 +4,14 @@ interface ICar {
 	freeSeats: number;
 }
 
-@changeDoorStatus(false)
-@changeAmountOfFuel(95)
+@ChangeDoorStatus(false)
+@ChangeAmountOfFuel(95)
 class myCar implements ICar {
 	fuel: string = "50%";
 	open: boolean = true;
 	freeSeats: number;
 
-	@checkAmountOfFuel
+	@CheckAmountOfFuel
 	isOpen(value: string) {
 		return this.open ? "open" : `close ${value}`;
 	}
@@ -19,7 +19,7 @@ class myCar implements ICar {
 
 // 87.1.0 Здесь мы рассмотрим миграцию написанного на старом синтаксисе версии TypeScript 4.9 кода декораторов методов класса, в современный синтаксис т.н. "ES-декораторов" для версии TypeScript 5+. И теперь все декораторы нового формата, что есть в TypeScript используют лишь два аргумента: "target" (на данный момент это метод, к которому применяется декоратор) и здесь мы типом пока поставим "any", чтобы не получать ошибку, а вот два других аргумента "propertyKey" и "descriptor" у нас удаляются. Им на смену приходит "context" — это объект с определёнными свойствами, описывающими характеристики того, к чему применяется декоратор и для типизации здесь используется специальный интерфейс "ClassMethodDecoratorContext".
 // 87.1.1 Также из типизации возвращающегося из функции результата убираем union type "PropertyDescriptor | void", т.к. теперь он здесь лишний.
-/* function checkAmountOfFuel(target: any, context: ClassMethodDecoratorContext) {
+/* function CheckAmountOfFuel(target: any, context: ClassMethodDecoratorContext) {
   // 87.1.2 Теперь, раз уж "target" — это теперь тот метод, на котором применяется декоратор, то и нет смысла сохранять ссылку на старый метод, как мы делали на прошлом уроке в более старом синтаксисе. Во-первых, потому, что у нас уже есть "target" в аргументах, а во-вторых, больше нет дескриптора, к которому мы обращались.
   // const oldValue = descriptor.value;
   // 87.1.3 Теперь нам нужно из этого декоратора возвращать функцию, а не заменять старую функцию "value" на новую. Ну, а внутри возвращаемой функции мы будем возвращать не "oldValue", а "target".
@@ -37,7 +37,7 @@ class myCar implements ICar {
 // 87.2.1 Затем мы типизируем то, что будет внутри функции-декоратора метода. Начнём с аргумента "target" — это будет стрелочной функцией, где первым аргументом будет контекст, куда мы передаём идентификатор "Т", здесь же мы точно не знаем какое кол-во аргументов примет этот метод, к которому применяется декоратор, поэтому тут будут аргументы со спред оператором, а типом идентификатор "А". А возвращаться из метода будет тип — идентификатор "R".
 // 87.2.2 Следом идёт аргумент "context" и его типизация в виде спец. интерфейса "ClassMethodDecoratorContext", который также будет дженериком и примет сначала контекст, затем функцию из "target", а вернёт идентификатор "R".
 // ? 87.2.7 Такая обобщённая запись декоратора метода класса очень удобна для какого-то общего функционала, например логирование перед вызовом оригинального метода, либо выполнение каких-то действий после выполнения оригинальных методов.
-function checkAmountOfFuel<T, A extends any[], R>(
+function CheckAmountOfFuel<T, A extends any[], R>(
 	target: (this: T, ...args: A) => R,
 	context: ClassMethodDecoratorContext<T, (this: T, ...args: A) => R>
 ) {
@@ -52,7 +52,7 @@ function checkAmountOfFuel<T, A extends any[], R>(
 	};
 }
 
-function changeDoorStatus(status: boolean) {
+function ChangeDoorStatus(status: boolean) {
 	console.log("door init");
 	return <T extends { new (...args: any[]): {} }>(
 		target: T,
@@ -65,7 +65,7 @@ function changeDoorStatus(status: boolean) {
 	};
 }
 
-function changeAmountOfFuel(amount: number) {
+function ChangeAmountOfFuel(amount: number) {
 	console.log("fuel init");
 	return <T extends { new (...args: any[]): {} }>(
 		target: T,

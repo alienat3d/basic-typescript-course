@@ -4,8 +4,8 @@ interface ICar {
   freeSeats: number;
 }
 
-@changeDoorStatus(false)
-@changeAmountOfFuel(95)
+@ChangeDoorStatus(false)
+@ChangeAmountOfFuel(95)
 class myCar implements ICar {
   fuel: string = "50%";
   open: boolean = true;
@@ -13,7 +13,7 @@ class myCar implements ICar {
 
   // ? 86.1.3 Применение декоратора метода класса такое же, как и у декораторов класса, мы записываем их название после символа "@" строкой выше над тем методом, к которому хотим его применить. ↓
   // 86.4.4 Добавим методу "isOpen" аргумент "value" с типом строки. ↓
-  @checkAmountOfFuel
+  @CheckAmountOfFuel
   isOpen(value: string) {
     return this.open ? "open" : `close ${value}`;
   }
@@ -26,7 +26,7 @@ class myCar implements ICar {
 
 // ? 86.1.1 Остановимся на дескрипторе подробнее. С помощью этих дескрипторов мы можем настраивать свойства, например, делать их не перебираемыми, чтобы было невозможно записать туда новое значение и т.д. И вот, как раз в этом специальном "PropertyDescriptor" интерфейсе и существуют все эти дескрипторы "configurable", "enumerable", "value", "writable" (можно их увидеть, если навести на сам интерфейс мышку или перейти в файл настроек TypeScript, где он описан, в зависимости от используемой IDE).
 // 86.4.2 А ещё в декоратор не лишним будет дописать возвращаемое значение, здесь это будет "PropertyDescriptor | void". ↓
-function checkAmountOfFuel(
+function CheckAmountOfFuel(
   target: Object,
   propertyKey: string | symbol,
   descriptor: PropertyDescriptor,
@@ -74,7 +74,7 @@ function checkAmountOfFuel(
   };
 }
 
-function changeDoorStatus(status: boolean) {
+function ChangeDoorStatus(status: boolean) {
   return <T extends { new(...args: any[]): {} }>(constructor: T) => {
     return class extends constructor {
       open = status;
@@ -82,7 +82,7 @@ function changeDoorStatus(status: boolean) {
   };
 }
 
-function changeAmountOfFuel(amount: number) {
+function ChangeAmountOfFuel(amount: number) {
   return <T extends { new(...args: any[]): {} }>(constructor: T) => {
     return class extends constructor {
       fuel = `${amount}%`;

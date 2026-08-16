@@ -8,37 +8,37 @@ interface ICar {
 	freeSeats: number;
 }
 
-@changeDoorStatus(false)
-@changeAmountOfFuel(95)
+@ChangeDoorStatus(false)
+@ChangeAmountOfFuel(95)
 class myCar implements ICar {
 	fuel: string = "50%";
 	open: boolean = true;
 	test: any;
 
   // ? 94.2.1 А ещё, в документации сказано, что декораторы параметров могут являться конструктором. Ведь конструктор это по сути обычный метод, у которого есть параметры и их мы можем декорировать.
-	constructor(@limit() test: number) {
+	constructor(@Limit() test: number) {
 		this.test = test;
 	}
 
-	@checkNumberOfSeats(4)
+	@CheckNumberOfSeats(4)
 	freeSeats: number;
 
-	@checkAmountOfFuel()
+	@CheckAmountOfFuel()
 	isOpen(value: string) {
 		return this.open ? "open" : `close ${value}`;
 	}
 
-	@validate()
-	startTravel(@limit() passengers: number) {
+	@Validate()
+	startTravel(@Limit() passengers: number) {
 		console.log(`Started with ${passengers} passengers`);
 	}
 }
 
 // ? 94.1 Итак, рассмотрим порядок выполнения декораторов на уже привычном примере класса автомобиля с различными декораторами, привязанными к нему. Мы добавили сюда выводы в консоль, чтобы точно увидеть, когда каждый декоратор инициализируется, а когда выполняется. Однако, тут нужно уточнить, что здесь можно было бы добавить ещё несколько вещей в это логирование, а именно декораторы статичных свойств (которые, кстати, инициализируются и вызываются после обычных свойств и методов класса) или методов класса, а ещё декораторы аксессоров.
 /* ? 94.2.0 Итак, нажмём выполнения кода и рассмотрим что же происходит в действительности с выполнением декораторов:
-* Init: Property Decorator // сначала инициализируется декоратор свойств ("checkNumberOfSeats") и т.к. у него нет цепочки, связанной с запуском других декораторов, то он сразу идёт в работу — "Call" на след. строчке
+* Init: Property Decorator // сначала инициализируется декоратор свойств ("CheckNumberOfSeats") и т.к. у него нет цепочки, связанной с запуском других декораторов, то он сразу идёт в работу — "Call" на след. строчке
 * Call: Property Decorator
-* Init: Method Decorator // далее идёт инициализация декоратора метода ("validate")
+* Init: Method Decorator // далее идёт инициализация декоратора метода ("Validate")
 * Init: Parameter Decorator // сразу за декоратором метода идёт инициализация декоратора параметров этого же метода, по цепочке
 * Call: Parameter Decorator // затем идёт вызов сначала декоратора параметров...
 * Call: Method Decorator // ...а за ним уже декоратора метода (вспоминаем принцип вызова функции внутри другой функции, где инициализация функций идёт снаружи внутрь, а запуск наоборот изнутри наружу)
@@ -49,7 +49,7 @@ class myCar implements ICar {
 * Call: Class Decorator Fuel // ну, и в самом конце, вызываются декораторы класса, начиная с самого внутреннего (иди нижнего в коде)...
 * Call: Class Decorator Door // ...и заканчивая самым внешним (самым верхним в коде)
 ↑ */
-function limit() {
+function Limit() {
 	console.log("Init: Parameter Decorator");
 	return (
 		target: Object,
@@ -69,7 +69,7 @@ function limit() {
 	};
 }
 
-function validate() {
+function Validate() {
 	console.log("Init: Method Decorator");
 	return (
 		target: Object,
@@ -98,7 +98,7 @@ function validate() {
 	};
 }
 
-function checkNumberOfSeats(limit: number) {
+function CheckNumberOfSeats(limit: number) {
 	console.log("Init: Property Decorator");
 	return function (target: Object, propertyKey: string | symbol) {
 		console.log("Call: Property Decorator");
@@ -126,7 +126,7 @@ function checkNumberOfSeats(limit: number) {
 	};
 }
 
-function checkAmountOfFuel() {
+function CheckAmountOfFuel() {
 	console.log("Init: Method Decorator");
 	return (
 		target: Object,
@@ -142,7 +142,7 @@ function checkAmountOfFuel() {
 	};
 }
 
-function changeDoorStatus(status: boolean) {
+function ChangeDoorStatus(status: boolean) {
 	console.log("Init: Class Decorator Door");
 	return <T extends { new (...args: any[]): {} }>(constructor: T) => {
 		console.log("Call: Class Decorator Door");
@@ -152,7 +152,7 @@ function changeDoorStatus(status: boolean) {
 	};
 }
 
-function changeAmountOfFuel(amount: number) {
+function ChangeAmountOfFuel(amount: number) {
 	console.log("Init: Class Decorator Fuel");
 	return <T extends { new (...args: any[]): {} }>(constructor: T) => {
 		console.log("Call: Class Decorator Fuel");

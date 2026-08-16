@@ -12,25 +12,25 @@ interface ICar {
   freeSeats: number;
 }
 
-@changeDoorStatus(false)
-@changeAmountOfFuel(95)
+@ChangeDoorStatus(false)
+@ChangeAmountOfFuel(95)
 class myCar implements ICar {
   fuel: string = "50%";
   open: boolean = true;
   errors: any;
 
-  @checkNumberOfSeats(4)
+  @CheckNumberOfSeats(4)
   freeSeats: number;
 
-  @checkAmountOfFuel
+  @CheckAmountOfFuel
   isOpen(value: string) {
     return this.open ? "open" : `close ${value}`;
   }
 
   // 92.2 Начнём с того, что добавим в класс новый метод "startTravel", параметр которого мы будем декорировать. У него будет параметр "passengers", который примет числовые данные (кол-во пассажиров, перевозимое в машине). Ну, и в теле функции просто выведем сообщение в консоль с количеством пассажиров в нём.
-  // ? 92.8.0 Итак, при помощи комбинации двух декораторов, декоратора параметра "limit" и декоратора метода "validate" мы произвели валидацию параметров, которые применяются внутри метода, чтобы было возможно передавать только валидные данные в качестве аргумента в этот метод. Для лучшего понимания проговорим ещё раз, что здесь происходило. Декораторы параметров помогают валидировать параметры, к которым они прикреплены. И практически всегда используются в связке с декоратором метода. ↓
-  @validate
-  startTravel(@limit passengers: number) {
+  // ? 92.8.0 Итак, при помощи комбинации двух декораторов, декоратора параметра "limit" и декоратора метода "Validate" мы произвели валидацию параметров, которые применяются внутри метода, чтобы было возможно передавать только валидные данные в качестве аргумента в этот метод. Для лучшего понимания проговорим ещё раз, что здесь происходило. Декораторы параметров помогают валидировать параметры, к которым они прикреплены. И практически всегда используются в связке с декоратором метода. ↓
+  @Validate
+  startTravel(@Limit passengers: number) {
     console.log(`Автомобиль отправился в путь с ${passengers} пассажирами в нём.`);
   }
 }
@@ -38,7 +38,7 @@ class myCar implements ICar {
 // 92.3.0 Здесь мы создадим функцию-декоратор для параметра метода "startTravel". Как и у каждого декоратора здесь будут параметры. И первые 2 вполне стандартные — это "target" типа "Object" (с которым мы работаем) и "propertyKey" (здесь может быть не совсем очевидным, чем оно должно являться, ведь когда мы работали с декораторами свойств или методов, то в том случае "propertyKey" было само свойство или метод. Тут мы применяем декоратор к параметру метода, а значит "propertyKey" будет ссылаться на тот метод, в котором мы работаем с параметром, т.е. на "startTravel"). Третьим параметром будет "parameterIndex" и он будет числом и показывает индекс параметра (т.е. его порядковый номер внутри функции начиная с 0).
 // ? 92.3.1 И, глядя на все эти параметры декоратора параметра, может показаться, что сам по себе декоратор параметра не очень полезен (ведь что нам сами по себе дают объект, где находится этот метод, его название или порядковый номер параметра?). И действительно, обычно декоратор параметров идёт в связке с декоратором метода и используются для какой-то валидации параметров метода.
 // ? 92.3.2 Ещё раз кратко про суть этого механизма: у нас есть аргумент "passengers", который передаётся в функцию "startTravel". И если нам нужно его проверить на этапе передачи в функцию, чтобы данные соответствовали каким-то ограничениям, то мы используем декоратор параметра метода класса. Во время работы этого декоратора мы устанавливаем определённые метаданные, а затем прописываем декоратор метода этого параметра, который, в свою очередь, проверит параметры этого метода на соответствие (по условию, что будет прописано). ↑
-function limit(
+function Limit(
   target: Object,
   propertyKey: string | symbol,
   parameterIndex: number,
@@ -71,8 +71,8 @@ function limit(
   );
 }
 
-// 92.6.0 Далее нам понадобится декоратор метода, потому, что на самом методе уже есть метаданные, которые можно использовать для валидации параметров, что там будут. Обычно такую функцию и называют "validate". Параметрами в ней будут всё те же "target", "propertyKey" & "descriptor".
-function validate(
+// 92.6.0 Далее нам понадобится декоратор метода, потому, что на самом методе уже есть метаданные, которые можно использовать для валидации параметров, что там будут. Обычно такую функцию и называют "Validate". Параметрами в ней будут всё те же "target", "propertyKey" & "descriptor".
+function Validate(
   target: Object,
   propertyKey: string | symbol,
   descriptor: PropertyDescriptor,
@@ -107,7 +107,7 @@ function validate(
   };
 }
 
-function checkNumberOfSeats(limit: number) {
+function CheckNumberOfSeats(limit: number) {
   return function (target: Object, propertyKey: string | symbol) {
     let symbol = Symbol();
 
@@ -133,7 +133,7 @@ function checkNumberOfSeats(limit: number) {
   };
 }
 
-function checkAmountOfFuel(
+function CheckAmountOfFuel(
   target: Object,
   propertyKey: string | symbol,
   descriptor: PropertyDescriptor,
@@ -145,7 +145,7 @@ function checkAmountOfFuel(
   };
 }
 
-function changeDoorStatus(status: boolean) {
+function ChangeDoorStatus(status: boolean) {
   return <T extends { new(...args: any[]): {} }>(constructor: T) => {
     return class extends constructor {
       open = status;
@@ -153,7 +153,7 @@ function changeDoorStatus(status: boolean) {
   };
 }
 
-function changeAmountOfFuel(amount: number) {
+function ChangeAmountOfFuel(amount: number) {
   return <T extends { new(...args: any[]): {} }>(constructor: T) => {
     return class extends constructor {
       fuel = `${amount}%`;

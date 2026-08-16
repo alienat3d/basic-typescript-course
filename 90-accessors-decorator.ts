@@ -4,8 +4,8 @@ interface ICar {
 	freeSeats: number;
 }
 
-@changeDoorStatus(false)
-@changeAmountOfFuel(95)
+@ChangeDoorStatus(false)
+@ChangeAmountOfFuel(95)
 class myCar implements ICar {
 	fuel: string = "50%";
 	open: boolean = true;
@@ -15,7 +15,7 @@ class myCar implements ICar {
 
   // 90.1.1 Дальше мы создаём аксессоры геттер и сеттер. В сеттере у нас будет параметр "num", куда будет приходить некое число, которое мы будем прибавлять к имеющемуся весу автомобиля. Представим, что это будет добавочный вес, при увеличении числа пассажиров, едущих в машине и\или груза. ↓
   // 90.1.7 Теперь применим декоратор сеттера на сеттер (причём не важно, к какому из двух аксессоров мы применяем декоратор аксессоров). ↓
-	@log
+	@Log
 	set weight(num: number) {
 		this._weight = this._weight + num;
 	}
@@ -24,17 +24,17 @@ class myCar implements ICar {
 		return this._weight;
 	}
 
-	@checkNumberOfSeats(4)
+	@CheckNumberOfSeats(4)
 	freeSeats: number;
 
-	@checkAmountOfFuel
+	@CheckAmountOfFuel
 	isOpen(value: string) {
 		return this.open ? "open" : `close ${value}`;
 	}
 }
 
 // 90.1.2 Далее мы создадим функцию-декоратор для аксессоров, который пример 3 параметра, но из них нам пригодится здесь лишь только 1 — дескриптор.
-function log(
+function Log(
   /* ? 90.1.3 Иногда, когда какие-то параметры не используются, то можно увидеть их в синтаксисе как нижние подчёркивания. Это вроде заглушки для тех стандартных параметров, которые, однако не будут использоваться в данной функции. Но совсем не обязательно следовать этому стилю кода, если он кажется ненужным и неочевидным:
   _: Object,
   __: string | symbol, */
@@ -46,7 +46,7 @@ function log(
 	const oldSet = descriptor.set;
 	const oldGet = descriptor.get;
 	descriptor.set = function (this: any, ...args: any) {
-    // 90.1.6 Раз уже декоратор называется "log", то давайте выведем в консоль, что мы изменяем значение на то значение, которое передадим в сеттер. ↑
+    // 90.1.6 Раз уже декоратор называется "Log", то давайте выведем в консоль, что мы изменяем значение на то значение, которое передадим в сеттер. ↑
 		console.log(`Изменяем значение на ${[...args]}`);
     // 90.1.5 Когда у нас предыдущее значение сохранено, можно вызвать оригинальный метод. И это действительно нам необходимо, т.к. значение сета мы обычно дополняем. Нам не нужно изменять сам функционал перезаписи значения. Не забудем указать оператор опциональности, т.к. "oldSet" может отсутствовать, т.е. быть в значении "undefined". ↑
 		return oldSet?.apply(this, args);
@@ -59,7 +59,7 @@ function log(
 	};
 }
 
-function checkNumberOfSeats(limit: number) {
+function CheckNumberOfSeats(limit: number) {
 	return function (target: Object, propertyKey: string | symbol) {
 		let symbol = Symbol();
 
@@ -85,7 +85,7 @@ function checkNumberOfSeats(limit: number) {
 	};
 }
 
-function checkAmountOfFuel(
+function CheckAmountOfFuel(
 	target: Object,
 	propertyKey: string | symbol,
 	descriptor: PropertyDescriptor
@@ -97,7 +97,7 @@ function checkAmountOfFuel(
 	};
 }
 
-function changeDoorStatus(status: boolean) {
+function ChangeDoorStatus(status: boolean) {
 	return <T extends { new (...args: any[]): {} }>(constructor: T) => {
 		return class extends constructor {
 			open = status;
@@ -105,7 +105,7 @@ function changeDoorStatus(status: boolean) {
 	};
 }
 
-function changeAmountOfFuel(amount: number) {
+function ChangeAmountOfFuel(amount: number) {
 	return <T extends { new (...args: any[]): {} }>(constructor: T) => {
 		return class extends constructor {
 			fuel = `${amount}%`;

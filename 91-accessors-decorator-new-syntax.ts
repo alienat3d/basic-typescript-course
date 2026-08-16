@@ -4,36 +4,36 @@ interface ICar {
   freeSeats: number;
 }
 
-@changeDoorStatus(false)
-@changeAmountOfFuel(95)
+@ChangeDoorStatus(false)
+@ChangeAmountOfFuel(95)
 class myCar implements ICar {
   fuel: string = "50%";
   open: boolean = true;
   errors: any;
   _weight: number = 1000;
 
-  // 91.1.2 Здесь мы применяем функцию-декоратор сеттера "logOnSet" собственно к сеттеру. ↓
-  @logOnSet
+  // 91.1.2 Здесь мы применяем функцию-декоратор сеттера "LogOnSet" собственно к сеттеру. ↓
+  @LogOnSet
   set weight(num: number) {
     this._weight = this._weight + num;
   }
 
-  @logOnGet
+  @LogOnGet
   get weight() {
     return this._weight;
   }
 
-  @checkNumberOfSeats(4)
+  @CheckNumberOfSeats(4)
   freeSeats: number = 3;
 
-  @checkAmountOfFuel
+  @CheckAmountOfFuel
   isOpen(value: string) {
     return this.open ? "open" : `close ${value}`;
   }
 }
 
-// 91.1.0 Итак, здесь мы будем создавать функцию-декоратор отдельно для сеттера и для геттера. Начнём с сеттера, назовём декоратор "logOnSet". Аннотация этого метода будет различной, в зависимости от того создаём ли мы узконаправленный декоратор аксессоров или более общий. Давайте разберём здесь оба варианта, начиная с узконаправленного. Сначала заменим параметры: "target" у нас останется, но это будет типом-прописанной функцией, где аргументом будет число, а результатом будет "void". Вторым параметром будет "context", где типом установим специальный интерфейс "ClassSetterDecoratorContext". Тип возвращаемого значения нам здесь уже не нужен.
-/*function logOnSet(
+// 91.1.0 Итак, здесь мы будем создавать функцию-декоратор отдельно для сеттера и для геттера. Начнём с сеттера, назовём декоратор "LogOnSet". Аннотация этого метода будет различной, в зависимости от того создаём ли мы узконаправленный декоратор аксессоров или более общий. Давайте разберём здесь оба варианта, начиная с узконаправленного. Сначала заменим параметры: "target" у нас останется, но это будет типом-прописанной функцией, где аргументом будет число, а результатом будет "void". Вторым параметром будет "context", где типом установим специальный интерфейс "ClassSetterDecoratorContext". Тип возвращаемого значения нам здесь уже не нужен.
+/*function LogOnSet(
   target: (value: number) => void,
   context: ClassSetterDecoratorContext,
 ) {
@@ -45,7 +45,7 @@ class myCar implements ICar {
 }*/
 
 // 91.3.0 Также стоит помнить, что мы можем сделать декораторы более стабильными по типам при помощи дженериков.  ↓
-function logOnSet<T, R>(
+function LogOnSet<T, R>(
 	target: (this: T, value: number) => R,
 	context: ClassSetterDecoratorContext<T, number>
 ) {
@@ -56,7 +56,7 @@ function logOnSet<T, R>(
 }
 
 // 91.2 Переходим к созданию декоратора геттера. И в целом, здесь всё то же самое, что и с сеттером. Только для описания функции для "target" возвращать будем уже число, а не "void" (ведь геттер должен возвращать какое-то значение). И аргументов у этой функции не будет. А также типом у "context" будет соответственно "ClassGetterDecoratorContext". ↑
-/*function logOnGet(
+/*function LogOnGet(
   target: () => number,
   context: ClassGetterDecoratorContext,
 ) {
@@ -67,7 +67,7 @@ function logOnSet<T, R>(
 }*/
 
 // 91.3.1 Сделаем декоратор геттера тоже дженериком:
-function logOnGet<T, R>(
+function LogOnGet<T, R>(
 	target: (this: T) => R,
 	context: ClassGetterDecoratorContext<T, number>
 ) {
@@ -77,7 +77,7 @@ function logOnGet<T, R>(
 	};
 }
 
-function checkNumberOfSeats(limit: number) {
+function CheckNumberOfSeats(limit: number) {
   return function (target: undefined, context: ClassFieldDecoratorContext) {
     return function (this: any, newAmount: number) {
       if (newAmount >= 1 && newAmount < limit) {
@@ -89,7 +89,7 @@ function checkNumberOfSeats(limit: number) {
   };
 }
 
-function checkAmountOfFuel<T, A extends any[], R>(
+function CheckAmountOfFuel<T, A extends any[], R>(
   target: (this: T, ...args: A) => R,
   context: ClassMethodDecoratorContext<T, (this: T, ...args: A) => R>,
 ) {
@@ -100,7 +100,7 @@ function checkAmountOfFuel<T, A extends any[], R>(
   };
 }
 
-function changeDoorStatus(status: boolean) {
+function ChangeDoorStatus(status: boolean) {
   console.log("door init");
   return <T extends { new(...args: any[]): {} }>(
     target: T,
@@ -113,7 +113,7 @@ function changeDoorStatus(status: boolean) {
   };
 }
 
-function changeAmountOfFuel(amount: number) {
+function ChangeAmountOfFuel(amount: number) {
   console.log("fuel init");
   return <T extends { new(...args: any[]): {} }>(
     target: T,

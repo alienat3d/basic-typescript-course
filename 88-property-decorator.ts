@@ -5,8 +5,8 @@ interface ICar {
 }
 
 // 88.1.0 Вернёмся к знакомому примеру и представим, что здесь нам нужно ограничить кол-во свободных сидений у класса описания машины. Для этого тут существует свойство "freeSeats" и мы хотим установить ему ограничения, что оно должно быть от 1 до 4 включительно. Причём мы сделаем так, что верхний лимит можно будет задать внутри декоратора и если в объект будет внесено ошибочно значение за пределами лимита свободных мест, то мы будем оповещать это событие ошибкой. ↓
-@changeDoorStatus(false)
-@changeAmountOfFuel(95)
+@ChangeDoorStatus(false)
+@ChangeAmountOfFuel(95)
 class myCar implements ICar {
   fuel: string = "50%";
   open: boolean = true;
@@ -14,10 +14,10 @@ class myCar implements ICar {
   errors: any;
 
   // 88.2.8 А в фабрику декораторов это значение приходит из объявления декоратора свойств. ↓
-  @checkNumberOfSeats(4)
+  @CheckNumberOfSeats(4)
   freeSeats: number = 5; // проверка декоратором произойдёт, даже если мы установим значение по умолчанию
 
-  @checkAmountOfFuel
+  @CheckAmountOfFuel
   isOpen(value: string) {
     return this.open ? "open" : `close ${value}`;
   }
@@ -30,7 +30,7 @@ class myCar implements ICar {
 * 3) также нам понадобится функционал по изменению этого свойства с его валидацией; */
 
 // 88.2.2 Но сначала объявим фабрику декораторов, чтобы иметь возможность передавать значение, где параметром будет "limit" в качестве какого-то числа (это и будет лимит кол-ва свободных мест в машине, не считая водителя). А затем мы уже возвращаем функцию-декоратор, со всеми параметрами, что мы описали чуть выше.
-function checkNumberOfSeats(limit: number) {
+function CheckNumberOfSeats(limit: number) {
   return function (target: Object, propertyKey: string | symbol) {
     // 88.2.3 Здесь мы создадим переменную "value", которая будет содержать значение свойства.
     // ? 88.2.4 Думаю, что вы заметили, что в этом декораторе у нас нет дескриптора, как был у декоратора метода. Этот тип декоратора примет всего два аргумента, поэтому мы будто имитируем интерфейс дескриптора. Если вспомнить внутренности интерфейса "PropertyDescriptor", то там были два метода аксессора "get" и "set", которые отвечали за получение значения свойств и за перезапись этого значения.
@@ -84,7 +84,7 @@ function checkNumberOfSeats(limit: number) {
   };
 }
 
-function checkAmountOfFuel(
+function CheckAmountOfFuel(
   target: Object,
   propertyKey: string | symbol,
   descriptor: PropertyDescriptor,
@@ -96,7 +96,7 @@ function checkAmountOfFuel(
   };
 }
 
-function changeDoorStatus(status: boolean) {
+function ChangeDoorStatus(status: boolean) {
   return <T extends { new(...args: any[]): {} }>(constructor: T) => {
     return class extends constructor {
       open = status;
@@ -104,7 +104,7 @@ function changeDoorStatus(status: boolean) {
   };
 }
 
-function changeAmountOfFuel(amount: number) {
+function ChangeAmountOfFuel(amount: number) {
   return <T extends { new(...args: any[]): {} }>(constructor: T) => {
     return class extends constructor {
       fuel = `${amount}%`;
