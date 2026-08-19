@@ -1,0 +1,71 @@
+{
+  // Visit https://aka.ms/tsconfig to read more about this file
+  /*"files": [
+    "index.ts",
+    "test.ts"
+  ],*/
+  // ? 97.2.1 Но так вот указывать путь к каждому файлу тоже не слишком удобно, гораздо проще было бы указать директорию/-ии с файлами. Для этого есть другая опция "include", которая занимается тем же, что и "files", но при этом позволяет создавать паттерны. Итак, допустим у нас есть две директории с TS-файлами — "src" и "test", тогда пути мы можем прописать так:
+  // ? 97.2.2 Стоит отметить, что когда мы указываем такой путь без расширения файла, то TS, следующий этому конфигу возьмёт из этих папок все файлы с расширениями: ".ts", ".tsx", ".dts". А если включить ещё одну настройку, то также ".js" и ".jsx". ↓
+  "include": [
+    "src/**/*",
+    "test/**/*"
+  ],
+  // ? 97.4 Мы можем также исключать определённые файлы/папки, которые находятся внутри настроек "include", но нужно убрать из компиляции при помощи опции "exclude". Однако, тут стоит помнить, что если эти файлы, которые мы хотим исключить попали (путём импорта) в другие включённые в компиляцию файлы, то они всё равно останутся в компиляции.
+  "exclude": [
+    "src/temp/**/*"
+  ],
+  // ? 97.5 Ещё есть опция топ-уровня "extends", которая позволит данному конфигу унаследовать настройку другого конфига (т.е. быть дополненным отсутствующими здесь настройками, но встречается довольно редко).
+  "compilerOptions": {
+    // ? 97.3.0 Ну, и раз уж мы об этом упомянули, то сразу посмотрим на его одну опцию "allowJs", которая позволит добавлять в компиляцию также JS-файлы. (Особенно могут быть полезны при миграции одного проекта в другой.) ↑
+    "allowJs": true,
+    // ? 97.3.1 Также есть ещё опция "checkJs", которая отвечает за проверку на ошибки JS-файлов.
+    "checkJs": true,
+    // File Layout
+    // ? 97.6 Рассмотрим ещё две опции самого компилятора "rootDir" & "outDir", которые указываю где у нас будет находиться корневая директория и куда будут складываться скомпилированные JS-файлы
+    // Go to [/notes/97-config-files-input-n-output.md]
+    // "rootDir": "./src",
+     "outDir": "./dist",
+
+    // Environment Settings
+    // See also https://aka.ms/tsconfig/module
+    "module": "nodenext",
+    "target": "es2020",
+    //    "target": "esnext",
+    "types": [],
+    // For nodejs:
+    // "lib": ["esnext"],
+    // "types": ["node"],
+    // and npm install -D @types/node
+
+    // Other Outputs
+    //    "sourceMap": true,
+    //    "declaration": true,
+    //    "declarationMap": true,
+    // Stricter Typechecking Options
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "strictPropertyInitialization": false,
+    // Для того чтобы снять TS-ошибки при использовании более нового синтаксиса полей классов в TypeScript
+    "experimentalDecorators": true,
+    // Поменять, если есть ошибка с синтаксисом декораторов в TypeScript
+    "emitDecoratorMetadata": true,
+    // Позволяет работать с метаданными
+
+    // Style Options
+    // "noImplicitReturns": true,
+    // "noImplicitOverride": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    // "noFallthroughCasesInSwitch": true,
+    // "noPropertyAccessFromIndexSignature": true,
+
+    // Recommended Options
+    "strict": true,
+    "jsx": "react-jsx",
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "force",
+    "skipLibCheck": true
+  }
+}
