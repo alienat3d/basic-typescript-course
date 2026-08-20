@@ -19,6 +19,9 @@ class ArrayQueue<T> implements Queue<T> {
     return this.queue.shift() as T;
   };
 
+  // ? 99.13.1 Итак, здесь, если бы у нас в типах на результат стоял "T | null", а не "T | undefined", то благодаря этой опции у нас тут была бы TS-ошибка, т.к. при отсутствии свойства "return this.queue[0]" вернул бы undefined, а не null, что может привести к поломке.
+  // (Go to [./styles.ts])
+  // peek(this: ArrayQueue<T>): T | null {
   peek(this: ArrayQueue<T>): T | undefined {
     if (!this.isEmpty()) return this.queue[0];
   };
